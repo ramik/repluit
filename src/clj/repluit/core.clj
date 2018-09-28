@@ -45,7 +45,7 @@
   "Shortcut for data query of the given visible node.
   ** Used internally, do not touch! **"
   {:style/indent 0}
-  [[node-binding node-expr] & expr]
+  [[node-binding node-expr] expr]
   `(with-stale-ignored
      (if-let [~node-binding (maybe ~node-expr)]
        ~expr)))
@@ -58,7 +58,7 @@
 (defn sleep
   "Holds the execution the given milliseconds"
   [ms]
-  {[(pos? ms)]}
+  {:pre [(pos? ms)]}
   (Thread/sleep ms))
 
 (defn default-session

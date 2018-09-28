@@ -13,13 +13,11 @@
   (loop [start (System/currentTimeMillis)]
     (let [result (try-run f)]
       (if (:value result)
-        result
+        (:value result)
         (do (when (> (- (System/currentTimeMillis) start) timeout)
-              (let [msg    "Could not satisfy expression withing given time frame"
-                    reason (or (:error result)
-                               (str "Value was: "
-                                    (pr-str (:value result))))]
-                (throw (ex/timeout msg expr-form reason))))
+              (let [reason (or (:error result)
+                               (str "value was " (pr-str (:value result))))]
+                (throw (ex/timeout expr-form reason))))
             (Thread/sleep 50)
             (recur start))))))
 

@@ -10,6 +10,6 @@
 (defn update-config! [f & args]
   (println "Forcefully changing the default configuration. I hope you know what you're doing... ;-)")
   (apply alter-var-root (concat [#'core/*config* f] args))
-  (println "New config is:")
+  (println "*** New config ***")
   (pprint core/*config*)
   nil)

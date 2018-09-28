@@ -1,7 +1,8 @@
 (ns repluit.core-test
   (:require [clojure.test :refer [deftest testing use-fixtures]]
             [repluit.test :refer [is]]
-            [repluit.core :as t]))
+            [repluit.core :as t]
+            [repluit.dev :as dev]))
 
 (def headless? true)
 
@@ -86,3 +87,26 @@
     (t/with-retry (t/click! (clear-completed-button)))
     (is (= ["lol" "foo"] (map todo-text (todo-items))))))
 
+
+
+(comment
+  (def sess (t/new-session! {:width 1000 :height 1000}))
+  (def browser (t/open-browser! sess {:headless false}))
+
+  (dev/set-browser! browser)
+
+  (dev/update-config! assoc :timeout 1000)
+
+  (t/goto! "file:///Users/matti/dev/repluit/examples/todomvc/example.html")
+
+  (t/q "div")
+  (add-todo! "adsad")
+
+  (t/wait (t/outer-html (todo-items)))
+
+
+  (t/close! browser)
+
+
+
+  )

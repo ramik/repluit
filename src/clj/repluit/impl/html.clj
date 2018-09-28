@@ -16,25 +16,27 @@
        (map (fn [a] [(keyword (.getKey a)) (->clj a)]))
        (into {})))
 
-(defmethod ->clj Comment [comment]
-  [:-comment (.getData comment)])
-
 (defmethod ->clj Element [elem]
-  {:tag     (keyword (.nodeName elem))
-   :attrs   (->clj (.attributes elem))
-   :content (->> (.childNodes elem)
-                 (map ->clj)
-                 (remove #(and (string? %) (string/blank? %)))
-                 (vec))})
+  (-> (concat
+        [(keyword (.nodeName elem))
+         (->clj (.attributes elem))]
+        (->> (.childNodes elem)
+             (map ->clj)
+             (remove #(and (string? %) (string/blank? %)))
+             (vec)))
+      (vec)))
 
 (defmethod ->clj TextNode [node]
   (.text node))
 
+(defmethod ->clj Comment [comment]
+  [:-#comment (.getData comment)])
+
 (defmethod ->clj DataNode [node]
-  [:#data (.getWholeData node)])
+  [:-#data (.getWholeData node)])
 
 (defmethod ->clj XmlDeclaration [decl]
-  [:#declaration (.getWholeDeclaration decl)])
+  [:-#declaration (.getWholeDeclaration decl)])
 
 (defmethod ->clj Document [doc]
   (->clj (.child doc 0)))

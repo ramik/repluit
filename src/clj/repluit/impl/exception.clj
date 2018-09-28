@@ -9,8 +9,8 @@
   (ExecutionException. msg true data))
 
 (defn timeout [expr reason]
-  (-> (str "Timeout when waiting for expression: " expr
-           "\n\nReason: " reason)
+  (-> (str "Timeout waiting for expression: " expr
+           "\nReason: " reason)
       (WaitTimeoutException.)))
 
 (defn js-error [description]

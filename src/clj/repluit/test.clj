@@ -4,10 +4,11 @@
 
 (defmacro is [form]
   `(let [rep#   (atom nil)
-         report (fn [_] (some-> @rep# (t/do-report)))]
+         report# #(some-> @rep# (t/do-report))]
      (try
-       (doto (with-redefs [t/do-report #(reset! rep# %)] (wait (is ~form)))
-         (report))
+       (let [res# (with-redefs [t/do-report #(reset! rep# %)] (wait (t/is ~form)))]
+         (report#)
+         res#)
        (catch Throwable t#
-         (report)
+         (report#)
          nil))))
