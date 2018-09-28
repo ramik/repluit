@@ -64,5 +64,5 @@
           (swap! state-atom stop! conn)
           (throw e))))))
 
-(defn get-active-bg-tasks [tracking]
+(defn get-active-tasks [tracking]
   (vals (:state @(:state-atom tracking))))
